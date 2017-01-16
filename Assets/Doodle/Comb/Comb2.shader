@@ -23,7 +23,7 @@
 
         CGPROGRAM
 
-        #pragma surface surf Standard fullforwardshadows addshadow
+        #pragma surface surf Standard nolightmap
         #pragma target 3.0
 
         struct Input
