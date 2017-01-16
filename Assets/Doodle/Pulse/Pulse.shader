@@ -63,11 +63,11 @@ Shader "Doodle/Pulse"
 
             // Line 1
             float l1 = abs(length(wp - _Pulse_Origin) - _Pulse_Line1.y);
-            acc += _Pulse_Line1Color * (1 - smoothstep(0, _Pulse_Line1.x, l1));
+            acc += _Pulse_Line1Color * 4 * pow(saturate(1 - l1 / _Pulse_Line1.x), 4);
 
             // Line 2
             float l2 = abs(length(wp - _Pulse_Origin) - _Pulse_Line2.y);
-            acc += _Pulse_Line2Color * (1 - smoothstep(0, _Pulse_Line2.x, l2));
+            acc += _Pulse_Line2Color * 4 * pow(saturate(1 - l2 / _Pulse_Line2.x), 4);
 
             return acc;
         }
@@ -86,7 +86,7 @@ Shader "Doodle/Pulse"
 
             half3 lc = LineColor(IN.worldPos);
             half3 wn = WorldNormalVector(IN, o.Normal);
-            o.Emission = lc * saturate(wn.y);
+            o.Emission = lc * (max(0, wn.y) + 0.03 + max(0, -0.2 * wn.y));
         }
 
         ENDCG
