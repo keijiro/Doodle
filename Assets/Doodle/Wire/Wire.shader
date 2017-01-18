@@ -3,12 +3,12 @@
     Properties
     {
         _Color("Color", Color) = (1, 1, 1, 1)
+        _Voxelize("Voxelize", Range(0, 1)) = 0.5
     }
 
     CGINCLUDE
 
     #include "UnityCG.cginc"
-
 
     float UVRandom(float u, float v)
     {
@@ -17,6 +17,7 @@
     }
 
     half4 _Color;
+    float _Voxelize;
 
     struct appdata
     {
@@ -33,8 +34,15 @@
 
     v2f vert(appdata v)
     {
+        float3 wp = mul(unity_ObjectToWorld, v.vertex).xyz;
+
+        float div = pow(5, 1 + (1 - _Voxelize) * 2);
+        float3 vp = floor(wp * div + 0.5) / div;
+
+        wp = lerp(wp, vp, saturate(_Voxelize * 10));
+
         v2f o;
-        o.vertex = UnityObjectToClipPos(v.vertex);
+        o.vertex = UnityWorldToClipPos(wp);
         o.uv = v.uv;
         UNITY_TRANSFER_FOG(o,o.vertex);
         return o;
@@ -42,7 +50,7 @@
 
     fixed4 frag(v2f i) : SV_Target
     {
-        fixed4 col = _Color * frac(dot(i.uv.xy, 1) + UVRandom(i.uv.x, i.uv.y) - _Time.y);
+        fixed4 col = _Color;
         UNITY_APPLY_FOG(i.fogCoord, col);
         return col;
     }
