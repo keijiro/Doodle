@@ -81,6 +81,8 @@ namespace Doodle.Wire
             var mesh = new Mesh();
             mesh.name = source.name;
             mesh.vertices = source.vertices;
+            mesh.normals = source.normals;
+            mesh.tangents = source.tangents;
             mesh.uv = source.uv;
             mesh.subMeshCount = 1;
             mesh.SetIndices(outIndices.ToArray(), MeshTopology.Lines, 0);

@@ -7,7 +7,7 @@ Material:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_Name: Wire
-  m_Shader: {fileID: 4800000, guid: f6e1236c37e88d74a9efa0f01102df21, type: 3}
+  m_Shader: {fileID: 4800000, guid: 0cd9b59e031c35d4993aafbb81549d90, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -46,6 +46,12 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - first:
+        name: _LevelTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
+    - first:
         name: _MainTex
       second:
         m_Texture: {fileID: 0}
@@ -69,13 +75,25 @@ Material:
         m_Texture: {fileID: 0}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
+    - first:
+        name: _WaveformTex
+      second:
+        m_Texture: {fileID: 0}
+        m_Scale: {x: 1, y: 1}
+        m_Offset: {x: 0, y: 0}
     m_Floats:
+    - first:
+        name: _Amplitude
+      second: 0.06
     - first:
         name: _BumpScale
       second: 1
     - first:
         name: _Cutoff
       second: 0.5
+    - first:
+        name: _Deform
+      second: 0
     - first:
         name: _DetailNormalMapScale
       second: 1
@@ -124,7 +142,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 1, g: 0.3931035, b: 0, a: 0.209}
+      second: {r: 0.6544118, g: 0.6544118, b: 0.6544118, a: 0.209}
     - first:
         name: _EmissionColor
       second: {r: 0.39705884, g: 0.39705884, b: 0.39705884, a: 1}
