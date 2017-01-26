@@ -3,55 +3,56 @@
     Properties
     {
         _Color("Color", Color) = (1, 1, 1, 1)
-        _Amplitude("Amplitude", Float) = 0.05
-        _Deform("Deform", Range(0, 1)) = 0
-        [HideInInspector] _WaveformTex("", 2D) = "black"{}
+
+        [Space]
+        _Frequency("Noise Frequency", Float) = 20
+        _Amplitude("Noise Amplitude", Float) = 0.05
+        _Speed("Noise Speed", Float) = 8
+
+        [HideInInspector] _LevelTex("", 2D) = "black"{}
     }
 
     CGINCLUDE
 
     #include "UnityCG.cginc"
+    #include "SimplexNoiseGrad3D.cginc"
 
     half4 _Color;
+
+    half _Frequency;
     half _Amplitude;
-    half _Deform;
-    sampler2D _WaveformTex;
+    half _Speed;
+
+    sampler2D _LevelTex;
 
     struct appdata
     {
         float4 vertex : POSITION;
-        float3 normal : NORMAL;
-        float4 tangent : TANGENT;
-        float2 uv : TEXCOORD0;
     };
 
     struct v2f
     {
-        UNITY_FOG_COORDS(1)
         float4 vertex : SV_POSITION;
+        UNITY_FOG_COORDS(1)
     };
-
-    float UVRandom(float2 uv)
-    {
-        float f = dot(float2(12.9898, 78.233), uv);
-        return frac(43758.5453 * sin(f));
-    }
 
     v2f vert(appdata v)
     {
         float3 P = v.vertex.xyz;
-        float3 N = v.normal;
-        float3 T = v.tangent.xyz;
-        float3 BN = cross(N, T) * v.tangent.w;
 
-        float4 tc = float4(v.uv.y + v.uv.x * 0.1, 0.5, 0, 0);
-        float lv = tex2Dlod(_WaveformTex, tc).r;
-        float3 disp = normalize(lerp(T, BN, UVRandom(v.uv)));
-        disp = normalize(lerp(N, disp, lv * 2)) * lv * _Amplitude;
+        // Divergence-free noise field
+        float3 n_offs = float3(0, _Time.y * _Speed, 0);
+        half3 n_p1 = n_offs + P * _Frequency;
+        half3 n_p2 = n_offs - P * _Frequency + float3(19.3742, 3.48392, 8.32454);
+        half3 dn = cross(snoise_grad(n_p1), snoise_grad(n_p2));
+
+        // Vertex displacement
+        half lv = tex2Dlod(_LevelTex, 0).r;
+        float3 disp = dn * _Amplitude * lv * lv * lv;
 
         v2f o;
         o.vertex = UnityObjectToClipPos(float4(P + disp, 1));
-        UNITY_TRANSFER_FOG(o,o.vertex);
+        UNITY_TRANSFER_FOG(o, o.vertex);
         return o;
     }
 

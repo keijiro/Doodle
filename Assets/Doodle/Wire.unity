@@ -827,7 +827,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1601876623}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: c555eb7a6df983f4ab6954f08f33fea0, type: 3}
   m_Name: 
@@ -1065,6 +1065,58 @@ Transform:
   m_Father: {fileID: 165678434}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 13, z: 0}
+--- !u!1 &1833429344
+GameObject:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  serializedVersion: 5
+  m_Component:
+  - component: {fileID: 1833429346}
+  - component: {fileID: 1833429345}
+  m_Layer: 0
+  m_Name: Audio Monitor
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1833429345
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1833429344}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 2bcf3af102b762c4abae1e1e1472bea9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _wavTexture: {fileID: 11400000, guid: e6cff561637bf7a4d9cbfc3a5bcc5c74, type: 2}
+  _channel: 0
+  _positionSource: {fileID: 164149488}
+  _renderers:
+  - {fileID: 636020912}
+  - {fileID: 1626907347}
+  - {fileID: 209354969}
+  - {fileID: 622476273}
+  - {fileID: 1762867400}
+  - {fileID: 1520275588}
+  - {fileID: 256005406}
+  _shader: {fileID: 4800000, guid: 7fcf75e801867294aa312f7bea3e75c6, type: 3}
+--- !u!4 &1833429346
+Transform:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1833429344}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_RootOrder: 6
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2102000244
 GameObject:
   m_ObjectHideFlags: 0
