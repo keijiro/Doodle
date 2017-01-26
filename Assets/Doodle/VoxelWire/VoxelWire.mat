@@ -6,8 +6,8 @@ Material:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
-  m_Name: Wire
-  m_Shader: {fileID: 4800000, guid: 0cd9b59e031c35d4993aafbb81549d90, type: 3}
+  m_Name: VoxelWire
+  m_Shader: {fileID: 4800000, guid: f6e1236c37e88d74a9efa0f01102df21, type: 3}
   m_ShaderKeywords: _EMISSION
   m_LightmapFlags: 1
   m_CustomRenderQueue: -1
@@ -101,6 +101,9 @@ Material:
         name: _DstBlend
       second: 0
     - first:
+        name: _Frequency
+      second: 20
+    - first:
         name: _GlossMapScale
       second: 1
     - first:
@@ -128,6 +131,9 @@ Material:
         name: _SpecularHighlights
       second: 1
     - first:
+        name: _Speed
+      second: 8
+    - first:
         name: _SrcBlend
       second: 1
     - first:
@@ -142,7 +148,7 @@ Material:
     m_Colors:
     - first:
         name: _Color
-      second: {r: 0.6544118, g: 0.6544118, b: 0.6544118, a: 0.209}
+      second: {r: 0.7205882, g: 0.37271804, b: 0, a: 0.209}
     - first:
         name: _EmissionColor
       second: {r: 0.39705884, g: 0.39705884, b: 0.39705884, a: 1}

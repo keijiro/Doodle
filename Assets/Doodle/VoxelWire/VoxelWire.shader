@@ -1,4 +1,4 @@
-﻿Shader "Doodle/Wire"
+﻿Shader "Doodle/Voxel Wire"
 {
     Properties
     {
@@ -10,24 +10,16 @@
 
     #include "UnityCG.cginc"
 
-    float UVRandom(float u, float v)
-    {
-        float f = dot(float2(12.9898, 78.233), float2(u, v));
-        return frac(43758.5453 * sin(f));
-    }
-
     half4 _Color;
     float _Voxelize;
 
     struct appdata
     {
         float4 vertex : POSITION;
-        float2 uv : TEXCOORD0;
     };
 
     struct v2f
     {
-        float2 uv : TEXCOORD0;
         UNITY_FOG_COORDS(1)
         float4 vertex : SV_POSITION;
     };
@@ -43,7 +35,6 @@
 
         v2f o;
         o.vertex = UnityWorldToClipPos(wp);
-        o.uv = v.uv;
         UNITY_TRANSFER_FOG(o,o.vertex);
         return o;
     }
