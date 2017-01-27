@@ -4,11 +4,18 @@ namespace Doodle
 {
     public class Clicker : MonoBehaviour
     {
-        #region Exposed properties
+        #region Configuration
 
-        [SerializeField] float _speed = 1;
+        [System.Serializable]
+        public class Config
+        {
+            public AnimationCurve spawnAnimation = AnimationCurve.Linear(0, 0, 1, 1);
+            public AnimationCurve moveAnimation = AnimationCurve.Linear(0, 0, 1, 1);
+            public AnimationCurve hitAnimation = AnimationCurve.Linear(0, 1, 1, 0);
+            public Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 10);
+        }
 
-        public Bounds bounds { get; set; }
+        public Config config { get; set; }
 
         #endregion
 
@@ -18,13 +25,13 @@ namespace Doodle
         {
             _currentPosition = _nextPosition;
             _currentRotation = _nextRotation;
-            _time01 = 0;
+            _moveTime = 0;
             ChooseNext();
         }
 
         public void Hit()
         {
-            _distortion = 8;
+            _hitTime = 0;
         }
 
         #endregion
@@ -37,8 +44,11 @@ namespace Doodle
         Quaternion _currentRotation;
         Quaternion _nextRotation;
 
-        float _distortion;
-        float _time01;
+        Vector3 _originalScale;
+
+        float _spawnTime;
+        float _moveTime;
+        float _hitTime;
 
         void ChooseNext()
         {
@@ -48,23 +58,27 @@ namespace Doodle
             var y = _currentPosition.y;
             var z = _currentPosition.z;
 
-            var dx = (dir == 0 ? -1 : (dir == 1 ? 1 : 0));
-            var dy = (dir == 2 ? -1 : (dir == 3 ? 1 : 0));
-            var dz = (dir == 4 ? -1 : (dir == 5 ? 1 : 0));
+            var i = (dir == 0 ? -1 : (dir == 1 ? 1 : 0));
+            var j = (dir == 2 ? -1 : (dir == 3 ? 1 : 0));
+            var k = (dir == 4 ? -1 : (dir == 5 ? 1 : 0));
 
-            var bmin = bounds.min;
-            var bmax = bounds.max;
+            var dx = i * _originalScale.x;
+            var dy = j * _originalScale.y;
+            var dz = k * _originalScale.z;
 
-            if (x + dx < bmin.x || x + dx >= bmax.x) dx *= -1;
-            if (y + dy < bmin.y || y + dy >= bmax.y) dy *= -1;
-            if (z + dz < bmin.z || z + dz >= bmax.z) dz *= -1;
+            var bmin = config.bounds.min;
+            var bmax = config.bounds.max;
+
+            if (x + dx < bmin.x || x + dx >= bmax.x) { i = -i; dx = -dx; }
+            if (y + dy < bmin.y || y + dy >= bmax.y) { j = -j; dy = -dy; }
+            if (z + dz < bmin.z || z + dz >= bmax.z) { k = -k; dz = -dz; }
 
             _nextPosition = _currentPosition + new Vector3(dx, dy, dz);
 
             _nextRotation =
-                Quaternion.AngleAxis(dx * 90, -Vector3.up) *
-                Quaternion.AngleAxis(dy * 90, Vector3.right) *
-                Quaternion.AngleAxis(dz * 90, Vector3.forward) *
+                Quaternion.AngleAxis(i * 90, -Vector3.up) *
+                Quaternion.AngleAxis(j * 90, Vector3.right) *
+                Quaternion.AngleAxis(k * 90, Vector3.forward) *
                 _currentRotation;
         }
 
@@ -74,19 +88,33 @@ namespace Doodle
 
         void Start()
         {
-            _currentPosition = transform.localPosition;
-            _currentRotation = transform.localRotation;
-            ChooseNext();
+            _nextPosition = transform.localPosition;
+            _nextRotation = transform.localRotation;
+
+            _originalScale = transform.localScale;
+            transform.localScale = Vector3.zero;
+
+            _spawnTime = 0;
+            _moveTime = 1e+6f;
+            _hitTime = 1e+6f;
         }
 
         void Update()
         {
-            _distortion *= Mathf.Exp(-16.0f * Time.deltaTime);
+            _spawnTime += Time.deltaTime;
+            _moveTime += Time.deltaTime;
+            _hitTime += Time.deltaTime;
 
-            _time01 = Mathf.Clamp01(_time01 + Time.deltaTime * _speed);
-            transform.localPosition = Vector3.Lerp(_currentPosition, _nextPosition, _time01);
-            transform.localRotation = Quaternion.Lerp(_currentRotation, _nextRotation, _time01);
-            transform.localScale = new Vector3(1 + _distortion, 1 / (1 + _distortion), 1 / (1 + _distortion));
+            var spawn = config.spawnAnimation.Evaluate(_spawnTime);
+            var move = config.moveAnimation.Evaluate(_moveTime);
+            var hit = config.hitAnimation.Evaluate(_hitTime);
+
+            transform.localPosition = Vector3.Lerp(_currentPosition, _nextPosition, move);
+            transform.localRotation = Quaternion.Lerp(_currentRotation, _nextRotation, move);
+
+            var rcphit = 1 / (1 + hit);
+            var scale = new Vector3(1 + hit, rcphit, rcphit) * spawn;
+            transform.localScale = Vector3.Scale(_originalScale, scale);
         }
 
         #endregion
