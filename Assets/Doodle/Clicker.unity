@@ -20,11 +20,11 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0.91724133, b: 1, a: 1}
+  m_AmbientSkyColor: {r: 0.8014706, g: 0.5952098, b: 0.5952098, a: 1}
   m_AmbientEquatorColor: {r: 0.21355969, g: 0.23375042, b: 0.36764705, a: 1}
   m_AmbientGroundColor: {r: 0.9632353, g: 0, b: 0, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 1
+  m_AmbientMode: 3
   m_SkyboxMaterial: {fileID: 0}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
@@ -227,7 +227,7 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 431157840}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d590be0fb2a7df34eb03b67cdf1adff7, type: 3}
   m_Name: 
@@ -595,6 +595,8 @@ MonoBehaviour:
     bounds:
       m_Center: {x: 0, y: 0.1, z: 0}
       m_Extent: {x: 2, y: 1, z: 2}
+    gradient: {fileID: 11400000, guid: 31ec096118e1fea4b8ee47ff1fa99cc1, type: 2}
+    gradientFrequency: 5
 --- !u!4 &1819957580
 Transform:
   m_ObjectHideFlags: 0

@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using Klak.Chromatics;
 
 namespace Doodle
 {
@@ -13,6 +14,8 @@ namespace Doodle
             public AnimationCurve moveAnimation = AnimationCurve.Linear(0, 0, 1, 1);
             public AnimationCurve hitAnimation = AnimationCurve.Linear(0, 1, 1, 0);
             public Bounds bounds = new Bounds(Vector3.zero, Vector3.one * 10);
+            public CosineGradient gradient;
+            public float gradientFrequency = 1;
         }
 
         public Config config { get; set; }
@@ -37,6 +40,8 @@ namespace Doodle
         #endregion
 
         #region Private members
+
+        Renderer _renderer;
 
         Vector3 _currentPosition;
         Vector3 _nextPosition;
@@ -88,6 +93,8 @@ namespace Doodle
 
         void Start()
         {
+            _renderer = GetComponent<Renderer>();
+
             _nextPosition = transform.localPosition;
             _nextRotation = transform.localRotation;
 
@@ -115,6 +122,9 @@ namespace Doodle
             var rcphit = 1 / (1 + hit);
             var scale = new Vector3(1 + hit, rcphit, rcphit) * spawn;
             transform.localScale = Vector3.Scale(_originalScale, scale);
+
+            var param = config.gradientFrequency * transform.localPosition.magnitude;
+            _renderer.material.color = config.gradient.Evaluate(param);
         }
 
         #endregion
